@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STREET | Modern Streetwear</title>
+
+    <!-- PWA Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="apple-touch-icon" href="app_icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">STREET.</div>
+        <div class="nav-icons mobile-only">
+            <i class="fa-solid fa-bars" onclick="toggleMobileMenu()"></i>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#home" onclick="toggleMobileMenu()">Home</a></li>
+            <li><a href="#shop" onclick="toggleMobileMenu()">Shop</a></li>
+            <li><a href="#about" onclick="toggleMobileMenu()">About</a></li>
+            <li class="desktop-only"><a href="#" onclick="openProfileModal()">Profile</a></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="profile-icon mobile-only" onclick="openProfileModal()">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span id="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>REDEFINE YOUR <br> STYLE</h1>
+            <p>Premium oversized tees for the modern generation.</p>
+            <a href="#shop" class="btn">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop" class="shop-section">
+        <h2 class="section-title">Latest Drops</h2>
+        <div class="product-grid" id="product-grid">
+            <!-- Products will be injected here by JS -->
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <h2 class="section-title">Who We Are</h2>
+            <p>STREET is more than a brand; it's a movement. Born in the underground scenes of 2024, we craft apparel
+                that speaks to the bold, the creatives, and the disruptors.</p>
+            <p>Our mission is simple: Premium quality, limited drops, and designs that don't just fit you, but define
+                you.</p>
+            <div class="features">
+                <div class="feature-box">
+                    <i class="fa-solid fa-shirt"></i>
+                    <h4>Premium Cotton</h4>
+                </div>
+                <div class="feature-box">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h4>Fast Shipping</h4>
+                </div>
+                <div class="feature-box">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <h4>Easy Returns</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact/FAQ Section -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">Get in Touch</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Have questions?</h3>
+                <p>Chat with us directly on WhatsApp for sizing guides, order status, or collabs.</p>
+                <a href="#" class="btn contact-btn"><i class="fa-brands fa-whatsapp"></i> Chat Support</a>
+            </div>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Message sent!');">
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Bag</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be injected here -->
+            <p class="empty-msg">Your bag is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button class="btn checkout-btn" onclick="openCheckoutModal()">
+                Checkout <i class="fa-brands fa-whatsapp"></i>
+            </button>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCheckoutModal()">&times;</span>
+            <h2>Checkout Details</h2>
+            <p>Enter your details to finalize the order on WhatsApp.</p>
+            <form id="checkout-form" onsubmit="processWhatsAppCheckout(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="customer-name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address</label>
+                    <textarea id="customer-address" required placeholder="123 Street Name, City"></textarea>
+                </div>
+                <button type="submit" class="btn checkout-submit-btn">
+                    Confirm Order <i class="fa-brands fa-whatsapp"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content profile-modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            <h2>My Profile</h2>
+
+            <div class="profile-tabs">
+                <button class="tab-btn active" onclick="switchTab('details')">Details</button>
+                <button class="tab-btn" onclick="switchTab('history')">Order History</button>
+            </div>
+
+            <div id="tab-details" class="tab-content active">
+                <form id="profile-form" onsubmit="saveProfile(event)">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" id="profile-name" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="profile-phone" placeholder="+91 9999999999">
+                    </div>
+                    <div class="form-group">
+                        <label>Saved Address</label>
+                        <textarea id="profile-address" placeholder="Your default delivery address"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Save Profile</button>
+                </form>
+            </div>
+
+            <div id="tab-history" class="tab-content">
+                <div id="order-history-list">
+                    <!-- Orders injected here -->
+                    <p class="empty-msg">No past orders found.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 STREET Brand. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
